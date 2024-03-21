@@ -36,7 +36,8 @@
     "@types/react-dom": "^18.2.22",
     "client-only": "^0.0.1",
     "server-only": "^0.0.1",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "zod-validation-error": "^3.0.3"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^7.3.1",
