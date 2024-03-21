@@ -1,0 +1,105 @@
+{
+  "name": "server-action",
+  "version": "0.0.1",
+  "description": "Type-safe, validated server action helper for React and Next.js.",
+  "author": "Ayterx (github.com/ayterx)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ayterx/server-action.git"
+  },
+  "license": "MIT",
+  "keywords": [
+    "action",
+    "next.js",
+    "react",
+    "server action",
+    "server"
+  ],
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    "./server": {
+      "import": {
+        "types": "./dist/es/server.d.mts",
+        "default": "./dist/es/server.mjs"
+      }
+    }
+  },
+  "scripts": {
+    "build": "bunchee --minify",
+    "format": "prettier --write . --ignore-path .gitignore",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@types/node": "^20.11.30",
+    "@types/react-dom": "^18.2.22",
+    "client-only": "^0.0.1",
+    "server-only": "^0.0.1",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.3.1",
+    "@typescript-eslint/parser": "^7.3.1",
+    "bunchee": "^5.0.0",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.3"
+  },
+  "packageManager": "pnpm@8.15.5",
+  "engines": {
+    "node": ">=18.17"
+  },
+  "prettier": {
+    "arrowParens": "always",
+    "bracketSameLine": false,
+    "bracketSpacing": true,
+    "endOfLine": "auto",
+    "printWidth": 100,
+    "semi": false,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "none"
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "es2021": true
+    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended-type-checked",
+      "plugin:@typescript-eslint/stylistic-type-checked"
+    ],
+    "ignorePatterns": [
+      "dist",
+      "eslint.config.js",
+      "pnpm-lock.yaml"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "ecmaVersion": "latest",
+      "project": "./tsconfig.json",
+      "sourceType": "module"
+    },
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "rules": {
+      "@typescript-eslint/consistent-type-imports": [
+        "warn",
+        {
+          "fixStyle": "separate-type-imports",
+          "prefer": "type-imports"
+        }
+      ],
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          "argsIgnorePattern": "^_",
+          "varsIgnorePattern": "^_"
+        }
+      ]
+    }
+  }
+}
