@@ -24,8 +24,8 @@ export const createAction = <T extends Record<string, z.ZodType>, U>(options: Op
 
       return {
         type: 'success' as const,
-        ...action
-      } as U extends void ? { type: 'success' } : { type: 'success' } & U
+        data: action as U extends void ? undefined : U
+      }
     } catch (casue) {
       return {
         type: 'error' as const
