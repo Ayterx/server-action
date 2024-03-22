@@ -1,5 +1,3 @@
-'use server'
-
 import 'server-only'
 
 import { fromZodError } from 'zod-validation-error'
