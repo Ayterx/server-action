@@ -31,14 +31,27 @@ interface CreateActionOptions<T extends Record<string, z.ZodType> | undefined, U
 export const createAction = <T extends Record<string, z.ZodType> | undefined, U>(
   options: CreateActionOptions<T, U>
 ) => {
-  return async (currentState: unknown, from: FormData) => {
+  return async (
+    ...args: T extends Record<string, z.ZodType>
+      ? [
+          | {
+              [K in keyof T]: z.infer<T[K]>
+            }
+          | FormData
+        ]
+      : []
+  ) => {
     try {
       let inputs: Record<string, z.ZodType> | undefined = undefined
 
       if (options.inputs) {
-        inputs = await z
-          .object({ ...options.inputs })
-          .parseAsync(Object.fromEntries(from.entries()))
+        if (args instanceof FormData) {
+          inputs = await z
+            .object({ ...options.inputs })
+            .parseAsync(Object.fromEntries(args.entries()))
+        } else if (args && typeof args === 'object') {
+          inputs = await z.object({ ...options.inputs }).parseAsync(args)
+        }
       }
 
       const action = await options.action(
@@ -55,9 +68,9 @@ export const createAction = <T extends Record<string, z.ZodType> | undefined, U>
         type: 'success' as const,
         data: action as U extends void ? undefined : U
       }
-    } catch (casue) {
-      if (casue instanceof z.ZodError) {
-        const validationError = fromZodError(casue, {
+    } catch (cause) {
+      if (cause instanceof z.ZodError) {
+        const validationError = fromZodError(cause, {
           includePath: options.options?.validation?.includePath ?? false,
           prefix: '',
           prefixSeparator: '',
