@@ -50,7 +50,7 @@ export const createAction = <T extends Record<string, z.ZodType> | undefined, U>
             .object({ ...options.inputs })
             .parseAsync(Object.fromEntries(args.entries()))
         } else if (args && typeof args === 'object') {
-          inputs = await z.object({ ...options.inputs }).parseAsync(args)
+          inputs = await z.object({ ...options.inputs }).parseAsync(args[0])
         }
       }
 
