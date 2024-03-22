@@ -29,6 +29,7 @@
   "scripts": {
     "build": "bunchee --minify",
     "format": "prettier --write . --ignore-path .gitignore",
+    "publish": "pnpm build && pnpm publish",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
