@@ -14,26 +14,42 @@ interface Options {
   validation?: Pick<FromZodErrorOptions, 'includePath' | 'maxIssuesInMessage'>
 }
 
-interface CreateActionOptions<T extends Record<string, z.ZodType>, U> {
-  inputs: T
+interface CreateActionOptions<T extends Record<string, z.ZodType> | undefined, U> {
+  inputs?: T
   options?: Options
-  action: (props: {
-    inputs: {
-      [K in keyof T]: z.infer<T[K]>
-    }
-  }) => Promise<U>
+  action: (
+    props: T extends Record<string, z.ZodType>
+      ? {
+          inputs: {
+            [K in keyof T]: z.infer<T[K]>
+          }
+        }
+      : unknown
+  ) => Promise<U>
 }
 
-export const createAction = <T extends Record<string, z.ZodType>, U>(
+export const createAction = <T extends Record<string, z.ZodType> | undefined, U>(
   options: CreateActionOptions<T, U>
 ) => {
   return async (currentState: unknown, from: FormData) => {
     try {
-      const inputs = await z
-        .object({ ...options.inputs })
-        .parseAsync(Object.fromEntries(from.entries()))
+      let inputs: Record<string, z.ZodType> | undefined = undefined
 
-      const action = await options.action({ inputs: inputs })
+      if (options.inputs) {
+        inputs = await z
+          .object({ ...options.inputs })
+          .parseAsync(Object.fromEntries(from.entries()))
+      }
+
+      const action = await options.action(
+        (inputs
+          ? {
+              inputs
+            }
+          : {}) as T extends Record<string, z.ZodType>
+          ? { inputs: { [K in keyof T]: z.infer<T[K]> } }
+          : unknown
+      )
 
       return {
         type: 'success' as const,
