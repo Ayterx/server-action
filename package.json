@@ -75,6 +75,7 @@
     ],
     "ignorePatterns": [
       "dist",
+      "docs",
       "eslint.config.js",
       "pnpm-lock.yaml"
     ],
