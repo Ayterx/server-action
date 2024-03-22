@@ -19,6 +19,12 @@
     "dist"
   ],
   "exports": {
+    "./client": {
+      "import": {
+        "types": "./dist/es/client.d.mts",
+        "default": "./dist/es/client.mjs"
+      }
+    },
     "./server": {
       "import": {
         "types": "./dist/es/server.d.mts",
@@ -33,14 +39,15 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@types/node": "^20.11.30",
-    "@types/react-dom": "^18.2.22",
     "client-only": "^0.0.1",
+    "react-dom": "^18.2.0",
     "server-only": "^0.0.1",
     "zod": "^3.22.4",
     "zod-validation-error": "^3.0.3"
   },
   "devDependencies": {
+    "@types/node": "^20.11.30",
+    "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.3.1",
     "@typescript-eslint/parser": "^7.3.1",
     "bunchee": "^5.0.0",
