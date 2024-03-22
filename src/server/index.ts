@@ -3,46 +3,17 @@
 import 'server-only'
 
 import { fromZodError } from 'zod-validation-error'
-import type { FromZodErrorOptions } from 'zod-validation-error'
 import { z } from 'zod'
+import type { CreateActionOptions, InputsInfer, InputsType } from './types'
 
-interface Options {
-  /**
-   * The options to pass to the `fromZodError` function from `zod-validation-error`.
-   * @default ``` { includePath: false, maxIssuesInMessage: 1 }```
-   */
-  validation?: Pick<FromZodErrorOptions, 'includePath' | 'maxIssuesInMessage'>
-}
-
-interface CreateActionOptions<T extends Record<string, z.ZodType> | undefined, U> {
-  inputs?: T
-  options?: Options
-  action: (
-    props: T extends Record<string, z.ZodType>
-      ? {
-          inputs: {
-            [K in keyof T]: z.infer<T[K]>
-          }
-        }
-      : unknown
-  ) => Promise<U>
-}
-
-export const createAction = <T extends Record<string, z.ZodType> | undefined, U>(
-  options: CreateActionOptions<T, U>
+export const createAction = <InputsGeneric extends InputsType | undefined, ActionReturnGeneric>(
+  options: CreateActionOptions<InputsGeneric, ActionReturnGeneric>
 ) => {
   return async (
-    ...args: T extends Record<string, z.ZodType>
-      ? [
-          | {
-              [K in keyof T]: z.infer<T[K]>
-            }
-          | FormData
-        ]
-      : []
+    ...args: InputsGeneric extends InputsType ? [InputsInfer<InputsGeneric> | FormData] : []
   ) => {
     try {
-      let inputs: Record<string, z.ZodType> | undefined = undefined
+      let inputs: InputsType | undefined = undefined
 
       if (options.inputs) {
         if (args instanceof FormData) {
@@ -59,14 +30,14 @@ export const createAction = <T extends Record<string, z.ZodType> | undefined, U>
           ? {
               inputs
             }
-          : {}) as T extends Record<string, z.ZodType>
-          ? { inputs: { [K in keyof T]: z.infer<T[K]> } }
+          : {}) as InputsGeneric extends InputsType
+          ? { inputs: InputsInfer<InputsGeneric> }
           : unknown
       )
 
       return {
         type: 'success' as const,
-        data: action as U extends void ? undefined : U
+        data: action as ActionReturnGeneric extends void ? undefined : ActionReturnGeneric
       }
     } catch (cause) {
       if (cause instanceof z.ZodError) {
