@@ -1,7 +1,11 @@
 import 'server-only'
 
 import { fromZodError } from 'zod-validation-error'
+
+import { isRedirectError } from 'next/dist/client/components/redirect'
+
 import { z } from 'zod'
+
 import type { ActionReturnType, CreateActionOptions, InputsInfer, InputsType } from './types'
 
 export const createAction = <
@@ -88,7 +92,7 @@ export const createAction = <
           status: 'error',
           message: validationError.toString()
         }
-      }
+      } else if (isRedirectError(cause)) throw cause
 
       return {
         status: 'error',
