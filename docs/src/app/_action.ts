@@ -9,6 +9,8 @@ export const helloAction = createAction({
     name: z.string().min(1)
   },
   action: async ({ inputs }) => {
-    return `Hello ${inputs.name}`
+    return {
+      message: `Hello ${inputs.name}`
+    }
   }
 })

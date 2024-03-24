@@ -23,6 +23,17 @@ export interface CreateActionOptions<InputsGeneric, ActionReturnGeneric> {
       ? {
           inputs: InputsInfer<InputsGeneric>
         }
-      : unknown
+      : never
   ) => Promise<ActionReturnGeneric>
 }
+
+export type ActionReturnType<ActionReturnData> = Promise<
+  | {
+      type: 'success'
+      data: ActionReturnData
+    }
+  | {
+      type: 'error'
+      message: string
+    }
+>

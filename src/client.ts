@@ -3,12 +3,9 @@
 import { useFormState } from 'react-dom'
 
 export const useAction = <ActionReturnGeneric>(
-  action: (from: FormData) => Promise<ActionReturnGeneric>
+  action: (currentState: unknown, from: FormData) => Promise<ActionReturnGeneric>
 ) => {
-  const [state, internelAction] = useFormState(
-    (currentState: unknown, form: FormData) => action(form),
-    null
-  )
+  const [state, internelAction] = useFormState(action, null)
 
   return {
     state,
