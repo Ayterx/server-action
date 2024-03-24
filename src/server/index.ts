@@ -64,7 +64,7 @@ export const createAction = <
         )
 
         return {
-          type: 'success',
+          status: 'success',
           data: resolveAction
         }
       }
@@ -72,11 +72,10 @@ export const createAction = <
       const resolveAction = await options.action({} as never)
 
       return {
-        type: 'success',
+        status: 'success',
         data: resolveAction
       }
     } catch (cause) {
-      console.log(cause)
       if (cause instanceof z.ZodError) {
         const validationError = fromZodError(cause, {
           includePath: options.options?.validation?.includePath ?? false,
@@ -86,13 +85,13 @@ export const createAction = <
         })
 
         return {
-          type: 'error' as const,
+          status: 'error',
           message: validationError.toString()
         }
       }
 
       return {
-        type: 'error' as const,
+        status: 'error',
         message: 'An unexpected error occurred.'
       }
     }

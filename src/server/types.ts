@@ -29,11 +29,11 @@ export interface CreateActionOptions<InputsGeneric, ActionReturnGeneric> {
 
 export type ActionReturnType<ActionReturnData> = Promise<
   | {
-      type: 'success'
+      status: 'success'
       data: ActionReturnData
     }
   | {
-      type: 'error'
+      status: 'error'
       message: string
     }
 >
