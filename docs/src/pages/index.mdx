@@ -1,0 +1,88 @@
+## Installation
+
+```bash npm2yarn
+npm i server-action
+```
+
+## Usage
+
+### 1. Define a new action
+
+```ts
+'use server'
+
+import { createAction } from 'server-action/server'
+import { db } from '@/server/database'
+import { z } from 'zod'
+
+export const sendMessage = createAction({
+  inputs: {
+    message: z.string().min(8).max(256)
+  },
+  action: async ({ inputs }) => {
+    const messageDetails = await db.messages.insert({ message: inputs.message })
+
+    return {
+      messageId: messageDetails.id
+    }
+  }
+})
+```
+
+`sendMessage` is a function that can be called from the client.
+
+### 2. Use it
+
+```tsx
+'use client'
+
+import { sendMessage } from '@/actions/sendMessage'
+import { useAction } from 'server-action/client'
+
+export const SendMessage = () => {
+  const { action, state } = useAction(sendMessage)
+
+  return (
+    <>
+      <form action={action}>
+        <input type="text" name="message" placeholder="Your message" />
+        <button type="submit">Send Message</button>
+      </form>
+      {state && state.status === 'success' ? (
+        <span>Your message id: {state.messageId}</span>
+      ) : (
+        <span>Error: {state.message}</span>
+      )}
+    </>
+  )
+}
+```
+
+or use it directly
+
+```tsx
+'use client'
+
+import { sendMessage } from '@/actions/sendMessage'
+
+export const SendMessage = () => {
+  return (
+    <>
+      <form action={sendMessage}>
+        <input type="text" name="message" placeholder="Your message" />
+        <button type="submit">Send Message</button>
+      </form>
+      // or
+      <button
+        onClick={async () => {
+          const data = await sendMessage({ message: 'hello world' })
+
+          console.log(data)
+        }}
+      >
+        Send Message
+      </button>
+    </>
+  )
+}
+```
