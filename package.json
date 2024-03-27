@@ -1,6 +1,6 @@
 {
   "name": "server-action",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Type-safe, validated server action helper for React and Next.js.",
   "author": "Ayterx (github.com/ayterx)",
   "repository": {
