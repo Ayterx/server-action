@@ -27,6 +27,8 @@ export interface CreateActionOptions<InputsGeneric, ActionReturnGeneric> {
   ) => Promise<ActionReturnGeneric>
 }
 
+export type ErrorType = 'validation' | 'server'
+
 export type ActionReturnType<ActionReturnData> = Promise<
   | {
       status: 'success'
@@ -34,6 +36,10 @@ export type ActionReturnType<ActionReturnData> = Promise<
     }
   | {
       status: 'error'
+      /**
+       * @description The type of the error, could be 'validation' or 'server', if it's 'validation' it means that `inputs` validation failed, if it's 'server' it means that the server throwed an error
+       */
+      type: ErrorType
       message: string
     }
 >

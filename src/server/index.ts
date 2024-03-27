@@ -90,12 +90,14 @@ export const createAction = <
 
         return {
           status: 'error',
+          type: 'validation',
           message: validationError.toString()
         }
       } else if (isRedirectError(cause)) throw cause
 
       return {
         status: 'error',
+        type: 'server',
         message: 'An unexpected error occurred.'
       }
     }
