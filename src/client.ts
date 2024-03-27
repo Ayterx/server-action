@@ -10,7 +10,7 @@ export const useAction = <ActionReturnGeneric>(
     /**
      * @description This event will be triggered in the client side when the action is successful
      */
-    onSuccess?: (state: ActionReturnGeneric) => void
+    onSuccess?: (data: ActionReturnGeneric) => void
     /**
      * @description This event will be triggered in the client side when the action is failed
      */
