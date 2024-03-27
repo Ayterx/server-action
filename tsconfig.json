@@ -17,6 +17,6 @@
     "target": "ES2022",
     "types": ["react-dom/experimental"]
   },
-  "exclude": ["dist", "docs"],
+  "exclude": ["dist"],
   "include": ["src/**/*.ts"]
 }
