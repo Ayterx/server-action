@@ -8,6 +8,8 @@ import { z } from 'zod'
 
 import type { ActionReturnType, CreateActionOptions, InputsInfer, InputsType } from './types'
 
+export type { ErrorType } from './types'
+
 export const createAction = <
   ActionReturnGeneric,
   InputsGeneric extends InputsType | undefined = undefined
