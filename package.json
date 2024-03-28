@@ -19,6 +19,7 @@
     "dist"
   ],
   "exports": {
+    "./package.json": "./package.json",
     "./client": {
       "import": {
         "types": "./dist/es/client.d.mts",
