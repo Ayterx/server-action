@@ -18,5 +18,5 @@
     "types": ["react-dom/experimental", "jest"]
   },
   "exclude": ["dist"],
-  "include": ["src/**/*.ts", "test/**/*.ts", "jest.config.ts"]
+  "include": ["src/**/*.ts", "test/**/*.ts", "test/**/*.tsx", "jest.config.ts"]
 }

@@ -35,7 +35,9 @@
   },
   "scripts": {
     "build": "bunchee --minify",
+    "format:check": "prettier --check . --ignore-path .gitignore",
     "format": "prettier --write . --ignore-path .gitignore",
+    "lint": "eslint .",
     "publish": "pnpm build && pnpm publish",
     "test": "jest",
     "typecheck": "tsc --noEmit"
