@@ -100,7 +100,7 @@ export const createAction = <
       return {
         status: 'error',
         type: 'server',
-        message: 'An unexpected error occurred.'
+        message: options.options?.error?.defaultMessage ?? 'An unexpected error occurred.'
       }
     }
   }

@@ -7,6 +7,13 @@ export interface Options {
    * @default ``` { includePath: false, maxIssuesInMessage: 1 }```
    */
   validation?: Pick<FromZodErrorOptions, 'includePath' | 'maxIssuesInMessage'>
+  error?: {
+    /**
+     * The default message to display when the server throws an error that is neither a `Zod` Error nor an `ActionError`.
+     * @default `An unexpected error occurred.`
+     */
+    defaultMessage?: string
+  }
 }
 
 export type InputsType = Record<string, z.ZodType>
