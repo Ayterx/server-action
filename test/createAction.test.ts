@@ -1,4 +1,4 @@
-import { createAction } from '../src/server'
+import { ActionError, createAction } from '../src/server'
 import { z } from 'zod'
 
 jest.mock('server-only', () => ({}))
@@ -189,7 +189,7 @@ describe('createAction', () => {
     })
   })
 
-  it('should return a server error when action throws an error', async () => {
+  it('should return a server error when action throws an `Error`', async () => {
     const action = createAction({
       action: () => {
         throw new Error()
@@ -202,6 +202,22 @@ describe('createAction', () => {
       status: 'error',
       type: 'server',
       message: expect.any(String) as string
+    })
+  })
+
+  it('should return a server error when action throws an `ActionError`', async () => {
+    const action = createAction({
+      action: () => {
+        throw new ActionError('Not Authorized')
+      }
+    })
+
+    const result = await action()
+
+    expect(result).toEqual({
+      status: 'error',
+      type: 'server',
+      message: 'Not Authorized'
     })
   })
 })

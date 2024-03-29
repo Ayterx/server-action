@@ -7,8 +7,10 @@ import { isRedirectError } from 'next/dist/client/components/redirect'
 import { z } from 'zod'
 
 import type { ActionReturnType, CreateActionOptions, InputsInfer, InputsType } from './types'
+import { ActionError } from './error'
 
 export type { ErrorType } from './types'
+export { ActionError } from './error'
 
 export const createAction = <
   ActionReturnGeneric,
@@ -94,6 +96,12 @@ export const createAction = <
           status: 'error',
           type: 'validation',
           message: validationError.toString()
+        }
+      } else if (cause instanceof ActionError) {
+        return {
+          status: 'error',
+          type: 'server',
+          message: cause.message
         }
       } else if (isRedirectError(cause)) throw cause
 

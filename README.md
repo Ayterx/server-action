@@ -91,6 +91,8 @@ export const SendMessage = () => {
 
 ## /server
 
+### createAction
+
 ```ts
 const action = createAction({
   // inputs are optional.
@@ -117,6 +119,26 @@ const action = createAction({
 })
 ```
 
+### ActionError
+
+When you want to display an error to the client, you can throw an ActionError, and your message will be passed to the client.
+
+```ts
+import { ActionError, createAction } from 'server-action/server'
+import { z } from 'zod'
+
+const action = createAction({
+  inputs: {
+    username: z.string()
+  },
+  action: ({ inputs }) => {
+    if (inputs.name !== 'admin') throw new ActionError('Not Authorized')
+
+    // ...
+  }
+})
+```
+
 ## /client
 
 ```ts
@@ -137,4 +159,34 @@ const { action, state } = useAction(action, {
 //    status: "success";
 //    data: ActionReturnData;
 // } | null
+```
+
+# Guides
+
+- How can I throw a validation error conditionally? Here's an example:
+
+```ts
+import { createAction } from 'server-action/server'
+import { z, ZodError } from 'zod'
+
+const update = createAction({
+  inputs: {
+    username: z.string(),
+    password: z.string(),
+    otp: z.number().min(6).max(6).optional()
+  },
+  action: async ({ inputs }) => {
+    if (inputs.username === 'admin' && !inputs.otp) {
+      throw new ZodError([
+        {
+          code: 'custom',
+          path: ['twoFactor'],
+          message: 'twoFactor code is required for admin user'
+        }
+      ])
+
+
+    // ...
+  }
+})
 ```
