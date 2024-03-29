@@ -37,6 +37,7 @@
     "build": "bunchee --minify",
     "format": "prettier --write . --ignore-path .gitignore",
     "publish": "pnpm build && pnpm publish",
+    "test": "jest",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -49,14 +50,22 @@
     "zod-validation-error": "^3.0.3"
   },
   "devDependencies": {
+    "@testing-library/react": "^14.2.2",
+    "@types/jest": "^29.5.12",
     "@types/node": "^20.11.30",
-    "@types/react-dom": "^18.2.22",
     "@types/react": "^18.2.71",
+    "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.3.1",
     "@typescript-eslint/parser": "^7.3.1",
     "bunchee": "^5.0.0",
     "eslint": "^8.57.0",
+    "eslint-plugin-testing-library": "^6.2.0",
+    "expect-type": "^0.19.0",
+    "jest": "^29.7.0",
     "prettier": "^3.2.5",
+    "server-action": "*",
+    "ts-jest": "^29.1.2",
+    "ts-node": "^10.9.2",
     "typescript": "^5.4.3"
   },
   "packageManager": "pnpm@8.15.5",
@@ -77,12 +86,14 @@
   "eslintConfig": {
     "env": {
       "browser": true,
-      "es2021": true
+      "es2021": true,
+      "jest": true
     },
     "extends": [
       "eslint:recommended",
       "plugin:@typescript-eslint/recommended-type-checked",
-      "plugin:@typescript-eslint/stylistic-type-checked"
+      "plugin:@typescript-eslint/stylistic-type-checked",
+      "plugin:testing-library/react"
     ],
     "ignorePatterns": [
       "dist",

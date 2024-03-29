@@ -15,8 +15,8 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "ES2022",
-    "types": ["react-dom/experimental"]
+    "types": ["react-dom/experimental", "jest"]
   },
   "exclude": ["dist"],
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts", "test/**/*.ts", "jest.config.ts"]
 }

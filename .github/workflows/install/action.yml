@@ -1,0 +1,13 @@
+name: 'Setup and install'
+
+runs:
+  using: composite
+  steps:
+    - uses: pnpm/action-setup@v2
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 18
+        cache: 'pnpm'
+
+    - shell: bash
+      run: pnpm install

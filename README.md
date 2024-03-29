@@ -86,8 +86,11 @@ export const SendMessage = () => {
   )
 }
 ```
+
 # API Reference
+
 ## /server
+
 ```ts
 const action = createAction({
   // inputs are optional.
@@ -115,6 +118,7 @@ const action = createAction({
 ```
 
 ## /client
+
 ```ts
 const { action, state } = useAction(action, {
   // The data is returned by the `action` function in `createAction`
