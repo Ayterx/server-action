@@ -1,8 +1,8 @@
-import { createAction } from 'server-action/server'
+import { createAction } from '../../src/server'
 import { expectTypeOf } from 'expect-type'
 import { z } from 'zod'
 
-import type { ErrorType } from 'server-action/server'
+import type { ErrorType } from '../../src/server'
 
 export const actionWithInputs = createAction({
   inputs: {

@@ -1,8 +1,8 @@
 import { actionWithInputs, actionWithoutInputs } from './createAction'
 import { expectTypeOf } from 'expect-type'
-import { useAction } from 'server-action/client'
+import { useAction } from '../../src/client'
 
-import type { ErrorType } from 'server-action/server'
+import type { ErrorType } from '../../src/server'
 
 const ActionWithInputs = useAction(actionWithInputs, {
   onError: (error) => {
