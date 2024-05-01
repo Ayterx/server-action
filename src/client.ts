@@ -22,7 +22,7 @@ export const useAction = <ActionReturnGeneric>(
     }) => void
   }
 ) => {
-  const [state, internelAction] = useActionState(action, null)
+  const [state, internelAction, isLoading] = useActionState(action, null)
 
   useEffect(() => {
     if (state && events) {
@@ -36,6 +36,7 @@ export const useAction = <ActionReturnGeneric>(
 
   return {
     action: internelAction,
+    isLoading,
     state
   }
 }

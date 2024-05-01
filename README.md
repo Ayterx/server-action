@@ -40,7 +40,7 @@ import { sendMessage } from '@/actions/sendMessage'
 import { useAction } from 'server-action/client'
 
 export const SendMessage = () => {
-  const { action, state } = useAction(sendMessage)
+  const { action, isLoading, state } = useAction(sendMessage)
 
   return (
     <>
@@ -142,7 +142,7 @@ const action = createAction({
 ## /client
 
 ```ts
-const { action, state } = useAction(action, {
+const { action, isLoading, state } = useAction(action, {
   // The data is returned by the `action` function in `createAction`
   onSuccess: (data) => { ... },
 
@@ -184,7 +184,6 @@ const update = createAction({
           message: 'twoFactor code is required for admin user'
         }
       ])
-
 
     // ...
   }
