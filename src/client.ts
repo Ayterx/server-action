@@ -1,7 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
-import { useFormState } from 'react-dom'
+import { useActionState, useEffect } from 'react'
 import type { ActionReturnType, ErrorType } from './server/types'
 
 export const useAction = <ActionReturnGeneric>(
@@ -23,7 +22,7 @@ export const useAction = <ActionReturnGeneric>(
     }) => void
   }
 ) => {
-  const [state, internelAction] = useFormState(action, null)
+  const [state, internelAction] = useActionState(action, null)
 
   useEffect(() => {
     if (state && events) {
@@ -36,7 +35,7 @@ export const useAction = <ActionReturnGeneric>(
   }, [state])
 
   return {
-    state,
-    action: internelAction
+    action: internelAction,
+    state
   }
 }
