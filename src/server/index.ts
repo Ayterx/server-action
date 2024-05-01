@@ -98,12 +98,20 @@ export const createAction = <
           message: validationError.toString()
         }
       } else if (cause instanceof ActionError) {
+        if (options.options?.error?.onServerError)
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+          await options.options.error.onServerError({ type: 'ActionError', cause })
+
         return {
           status: 'error',
           type: 'server',
           message: cause.message
         }
       } else if (isRedirectError(cause)) throw cause
+
+      if (options.options?.error?.onServerError)
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        await options.options.error.onServerError({ type: 'unknown', cause })
 
       return {
         status: 'error',

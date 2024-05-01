@@ -1,5 +1,6 @@
 import type { z } from 'zod'
 import type { FromZodErrorOptions } from 'zod-validation-error'
+import type { ActionError } from './error'
 
 export interface Options {
   /**
@@ -13,6 +14,12 @@ export interface Options {
      * @default `An unexpected error occurred.`
      */
     defaultMessage?: string
+    /**
+     * @description This event will be triggered in the server side when the action is failed
+     */
+    onServerError?: (
+      options: { type: 'ActionError'; cause: ActionError } | { type: 'unknown'; cause: unknown }
+    ) => Promise<void> | void
   }
 }
 

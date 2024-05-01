@@ -209,6 +209,18 @@ describe('createAction', () => {
     const action = createAction({
       action: () => {
         throw new ActionError('Not Authorized')
+      },
+      options: {
+        error: {
+          onServerError: async ({ type, cause }) => {
+            if (type === 'ActionError') {
+              // send to error reporting service
+              await new Promise((resolve) => setTimeout(resolve, 100))
+
+              console.log('error', cause.message)
+            }
+          }
+        }
       }
     })
 
