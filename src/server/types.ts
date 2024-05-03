@@ -38,7 +38,7 @@ export interface CreateActionOptions<InputsGeneric, ActionReturnGeneric> {
           inputs: InputsInfer<InputsGeneric>
         }
       : never
-  ) => Promise<ActionReturnGeneric>
+  ) => ActionReturnGeneric | Promise<ActionReturnGeneric>
 }
 
 export type ErrorType = 'validation' | 'server'
