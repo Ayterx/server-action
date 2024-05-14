@@ -1,5 +1,3 @@
-import 'server-only'
-
 import { handleAction } from './handleAction'
 import type { ActionOptions, InputsType } from './types'
 
