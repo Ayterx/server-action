@@ -18,7 +18,9 @@ export type MiddlewareActionOptions<InputsGeneric, ActionReturnGeneric, Middlewa
             inputs: InputsInfer<InputsGeneric>
             middlewareData: MiddlewareReturnGeneric
           }
-        : never
+        : {
+            middlewareData: MiddlewareReturnGeneric
+          }
     ) => ActionReturnGeneric | Promise<ActionReturnGeneric>
   }
 

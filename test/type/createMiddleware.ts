@@ -77,3 +77,32 @@ expectTypeOf(dataActionWithInputs).toEqualTypeOf<
       message: string
     }
 >()
+
+export const actionWithoutInputs = authAction({
+  action: async ({ middlewareData }) => {
+    expectTypeOf(middlewareData).toEqualTypeOf<{
+      isSignedIn: boolean
+      session: {
+        username: string
+      }
+    }>()
+
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+
+    return 'Hello, World!'
+  }
+})
+
+const dataWithoutInputs = await actionWithoutInputs()
+
+expectTypeOf(dataWithoutInputs).toEqualTypeOf<
+  | {
+      status: 'success'
+      data: string
+    }
+  | {
+      status: 'error'
+      type: ErrorType
+      message: string
+    }
+>
