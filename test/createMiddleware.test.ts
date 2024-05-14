@@ -88,10 +88,12 @@ describe('createMiddleware', () => {
 
   it('should return success status without `inputs`', async () => {
     const action = authAction({
-      action: async () => {
+      action: async ({ middlewareData }) => {
         await new Promise((resolve) => setTimeout(resolve, 100))
 
-        return 'hello'
+        return {
+          isSignedIn: middlewareData.isSignedIn
+        }
       }
     })
 
@@ -99,7 +101,9 @@ describe('createMiddleware', () => {
 
     expect(result).toEqual({
       status: 'success',
-      data: 'hello'
+      data: {
+        isSignedIn: true
+      }
     })
   })
 

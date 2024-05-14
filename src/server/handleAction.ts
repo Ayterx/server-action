@@ -90,7 +90,24 @@ export function handleAction<
         }
       }
 
-      const resolveAction = await options.action({} as never)
+      let middlewareData: MiddlewareReturnGeneric | undefined
+
+      if (middleware)
+        // @ts-expect-error is it really necessary to type this?
+        middlewareData = await middleware({
+          metadata:
+            (
+              options as MiddlewareActionOptions<
+                InputsGeneric,
+                ActionReturnGeneric,
+                MiddlewareReturnGeneric
+              >
+            ).meta ?? {}
+        })
+
+      const resolveAction = await options.action({
+        middlewareData
+      } as never)
 
       return {
         status: 'success',
