@@ -29,7 +29,7 @@ export type InputsInfer<T extends InputsType> = {
   [K in keyof T]: z.infer<T[K]>
 }
 
-export interface CreateActionOptions<InputsGeneric, ActionReturnGeneric> {
+export interface ActionOptions<InputsGeneric, ActionReturnGeneric> {
   inputs?: InputsGeneric
   options?: Options
   action: (
