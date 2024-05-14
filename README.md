@@ -1,7 +1,7 @@
 ## Installation
 
 ```
-pnpm install server-action
+pnpm add server-action
 ```
 
 ## Usage
@@ -12,7 +12,7 @@ pnpm install server-action
 'use server'
 
 import { createAction } from 'server-action/server'
-import { db } from '@/server/database'
+import { db } from '@/database'
 import { z } from 'zod'
 
 export const sendMessage = createAction({
@@ -87,13 +87,90 @@ export const SendMessage = () => {
 }
 ```
 
+### Middleware
+
+If you want to do something before your actions run, such as rate-limiting or checking auth.
+
+```ts
+import { ActionError, createMiddleware } from 'server-action/server'
+import { db } from '@/database'
+import { getSession } from '@/auth'
+import { z } from 'zod'
+
+const createAuthAction = createMiddleware(async () => {
+  const session = await getSession()
+
+  if (!session) throw new ActionError('Not Authorized')
+
+  return {
+    session
+  }
+})
+
+export const sendMessage = createAuthAction({
+  inputs: {
+    message: z.string().min(8).max(256)
+  },
+  action: async ({ inputs, middlewareData }) => {
+    const messageDetails = await db.messages.insert({
+      message: inputs.message,
+      userId: middlewareData.session.userId
+    })
+
+    return {
+      messageId: messageDetails.id
+    }
+  }
+})
+```
+
+Now sendMessage action is protected by the auth middleware.
+
 # API Reference
 
 ## /server
 
+Everything imported from `server-action/server` should only be used on the server side.
+
+### createMiddleware
+
+```ts
+import { createMiddleware } from 'server-action/server'
+import { z } from 'zod'
+
+//                                                `inputs` is available when `inputs` is defined.
+//                                                        `metadata` is available when `meta` is defined.
+const createAuthAction = createMiddleware(async ({ inputs, metadata }) => {
+  // `metadata` = { skipAuth: true }
+  // `inputs` = { message: 'hello world' }
+
+  // return anything and will be available in the `action` function
+  return {
+    session: null
+  }
+})
+
+export const sendMessage = createAuthAction({
+  meta: {
+    // You can add key-value pairs to the meta object, and they will be available in the middleware as metadata.
+    skipAuth: true
+  },
+  inputs: {
+    message: z.string().min(8).max(256)
+  },
+  action: async ({ inputs, middlewareData }) => {
+    // `middlewareData` = { session: null }
+    // ...
+  }
+})
+```
+
 ### createAction
 
 ```ts
+import { createAction } from 'server-action/server'
+import { z } from 'zod'
+
 const action = createAction({
   // inputs are optional.
   inputs: {
@@ -142,6 +219,8 @@ const action = createAction({
 ## /client
 
 ```ts
+import { useAction } from 'server-action/client'
+
 const { action, isLoading, state } = useAction(action, {
   // The data is returned by the `action` function in `createAction`
   onSuccess: (data) => { ... },
