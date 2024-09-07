@@ -142,6 +142,7 @@ export function handleAction<
       if (options.options?.error?.onServerError)
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         await options.options.error.onServerError({ type: 'unknown', cause })
+      else console.error(cause)
 
       return {
         status: 'error',
