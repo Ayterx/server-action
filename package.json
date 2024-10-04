@@ -1,11 +1,11 @@
 {
-  "name": "server-action",
+  "name": "rsfh",
   "version": "0.3.2",
   "description": "Type-safe, validated server action helper for React and Next.js.",
   "author": "Ayterx (github.com/ayterx)",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ayterx/server-action.git"
+    "url": "https://github.com/ayterx/rsfh.git"
   },
   "license": "MIT",
   "keywords": [
@@ -13,6 +13,7 @@
     "next.js",
     "react",
     "server action",
+    "server functions",
     "server"
   ],
   "files": [
