@@ -1,7 +1,7 @@
 ## Installation
 
 ```
-pnpm add server-action
+pnpm add rsfh
 ```
 
 ## Usage
@@ -11,7 +11,7 @@ pnpm add server-action
 ```ts
 'use server'
 
-import { createAction } from 'server-action/server'
+import { createAction } from 'rsfh/server'
 import { db } from '@/database'
 import { z } from 'zod'
 
@@ -37,7 +37,7 @@ export const sendMessage = createAction({
 'use client'
 
 import { sendMessage } from '@/actions/sendMessage'
-import { useAction } from 'server-action/client'
+import { useAction } from 'rsfh/client'
 
 export const SendMessage = () => {
   const { action, isLoading, state } = useAction(sendMessage)
@@ -92,7 +92,7 @@ export const SendMessage = () => {
 If you want to do something before your actions run, such as rate-limiting or checking auth.
 
 ```ts
-import { ActionError, createMiddleware } from 'server-action/server'
+import { ActionError, createMiddleware } from 'rsfh/server'
 import { db } from '@/database'
 import { getSession } from '@/auth'
 import { z } from 'zod'
@@ -130,12 +130,12 @@ Now sendMessage action is protected by the auth middleware.
 
 ## /server
 
-Everything imported from `server-action/server` should only be used on the server side.
+Everything imported from `rsfh/server` should only be used on the server side.
 
 ### createMiddleware
 
 ```ts
-import { createMiddleware } from 'server-action/server'
+import { createMiddleware } from 'rsfh/server'
 import { z } from 'zod'
 
 //                                                `inputs` is available when `inputs` is defined.
@@ -168,7 +168,7 @@ export const sendMessage = createAuthAction({
 ### createAction
 
 ```ts
-import { createAction } from 'server-action/server'
+import { createAction } from 'rsfh/server'
 import { z } from 'zod'
 
 const action = createAction({
@@ -201,7 +201,7 @@ const action = createAction({
 When you want to display an error to the client, you can throw an ActionError, and your message will be passed to the client.
 
 ```ts
-import { ActionError, createAction } from 'server-action/server'
+import { ActionError, createAction } from 'rsfh/server'
 import { z } from 'zod'
 
 const action = createAction({
@@ -219,7 +219,7 @@ const action = createAction({
 ## /client
 
 ```ts
-import { useAction } from 'server-action/client'
+import { useAction } from 'rsfh/client'
 
 const { action, isLoading, state } = useAction(action, {
   // The data is returned by the `action` function in `createAction`
@@ -245,7 +245,7 @@ const { action, isLoading, state } = useAction(action, {
 - How can I throw a validation error conditionally? Here's an example:
 
 ```ts
-import { createAction } from 'server-action/server'
+import { createAction } from 'rsfh/server'
 import { z, ZodError } from 'zod'
 
 const update = createAction({
