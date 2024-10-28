@@ -1,13 +1,18 @@
 import type { z } from 'zod'
-import type { FromZodErrorOptions } from 'zod-validation-error'
+import type { FromZodErrorOptions, MessageBuilder } from 'zod-validation-error'
 import type { ActionError } from './error'
+
+type ExtractCreateMessageBuilderProps = Exclude<
+  FromZodErrorOptions,
+  { messageBuilder: MessageBuilder }
+>
 
 export interface Options {
   /**
    * The options to pass to the `fromZodError` function from `zod-validation-error`.
    * @default ``` { includePath: false, maxIssuesInMessage: 1 }```
    */
-  validation?: Pick<FromZodErrorOptions, 'includePath' | 'maxIssuesInMessage'>
+  validation?: Pick<ExtractCreateMessageBuilderProps, 'includePath' | 'maxIssuesInMessage'>
   error?: {
     /**
      * The default message to display when the server throws an error that is neither a `Zod` Error nor an `ActionError`.
