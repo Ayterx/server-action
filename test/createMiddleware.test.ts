@@ -254,12 +254,10 @@ describe('createMiddleware', () => {
       },
       options: {
         error: {
-          onServerError: async ({ type, cause }) => {
+          onServerError: async ({ type }) => {
             if (type === 'ActionError') {
               // send to error reporting service
               await new Promise((resolve) => setTimeout(resolve, 100))
-
-              console.log('error', cause.message)
             }
           }
         }

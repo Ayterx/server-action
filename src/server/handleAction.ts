@@ -44,14 +44,44 @@ export function handleAction<
 
         if (args.length === 2 && args[1] instanceof FormData) {
           // using useAction or useActionState
-          inputs = await z
-            .object({ ...options.inputs })
-            .parseAsync(Object.fromEntries(args[1].entries()))
+
+          const form = args[1]
+          const keys: string[] = []
+
+          for (const key of form.keys()) {
+            if (!keys.includes(key)) keys.push(key)
+          }
+
+          const values = Object.fromEntries(
+            keys.map((key) => {
+              const value = form.getAll(key)
+
+              if (value.length > 1) return [key, value]
+              else return [key, form.get(key)]
+            })
+          ) as Record<string, FormDataEntryValue>
+
+          inputs = await z.object({ ...options.inputs }).parseAsync(values)
         } else if (args.length === 1 && args[0] instanceof FormData) {
           // using form element
-          inputs = await z
-            .object({ ...options.inputs })
-            .parseAsync(Object.fromEntries(args[0].entries()))
+
+          const form = args[0]
+          const keys: string[] = []
+
+          for (const key of form.keys()) {
+            if (!keys.includes(key)) keys.push(key)
+          }
+
+          const values = Object.fromEntries(
+            keys.map((key) => {
+              const value = form.getAll(key)
+
+              if (value.length > 1) return [key, value]
+              else return [key, form.get(key)]
+            })
+          ) as Record<string, FormDataEntryValue>
+
+          inputs = await z.object({ ...options.inputs }).parseAsync(values)
         } else if (args.length === 1 && typeof args[0] === 'object') {
           // using onClick or other direct call
           inputs = await z.object({ ...options.inputs }).parseAsync(args[0])
@@ -142,7 +172,7 @@ export function handleAction<
       if (options.options?.error?.onServerError)
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         await options.options.error.onServerError({ type: 'unknown', cause })
-      else console.error(cause)
+      else console.log(cause)
 
       return {
         status: 'error',

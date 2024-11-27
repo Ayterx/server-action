@@ -212,12 +212,10 @@ describe('createAction', () => {
       },
       options: {
         error: {
-          onServerError: async ({ type, cause }) => {
+          onServerError: async ({ type }) => {
             if (type === 'ActionError') {
               // send to error reporting service
               await new Promise((resolve) => setTimeout(resolve, 100))
-
-              console.log('error', cause.message)
             }
           }
         }
@@ -231,5 +229,36 @@ describe('createAction', () => {
       type: 'server',
       message: 'Not Authorized'
     })
+  })
+
+  it('inputs should return a mutiple files', async () => {
+    const action = createAction({
+      inputs: {
+        file: z.array(z.instanceof(File))
+      },
+      action: ({ inputs }) => {
+        return inputs
+      }
+    })
+
+    const result = await action({
+      file: [
+        new File(['test'], 'test.txt', { lastModified: 0 }),
+        new File(['test'], 'test.txt', { lastModified: 0 })
+      ]
+    })
+
+    if (result.status === 'success')
+      expect(
+        result.data.file.map((file) => ({
+          name: file.name,
+          size: file.size,
+          type: file.type,
+          lastModified: file.lastModified
+        }))
+      ).toEqual([
+        { name: 'test.txt', size: 4, type: '', lastModified: 0 },
+        { name: 'test.txt', size: 4, type: '', lastModified: 0 }
+      ])
   })
 })
