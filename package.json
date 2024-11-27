@@ -1,6 +1,6 @@
 {
   "name": "rsfh",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "Type-safe, validated server action helper for React and Next.js.",
   "author": "Ayterx (github.com/ayterx)",
   "repository": {
