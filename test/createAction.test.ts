@@ -261,4 +261,25 @@ describe('createAction', () => {
         { name: 'test.txt', size: 4, type: '', lastModified: 0 }
       ])
   })
+
+  it('inputs should return a single file', async () => {
+    const action = createAction({
+      inputs: {
+        file: z.array(z.instanceof(File)).or(z.instanceof(File))
+      },
+      action: ({ inputs }) => {
+        return inputs
+      }
+    })
+
+    const form = new FormData()
+    form.append('file', new File(['test'], 'test.txt', { lastModified: 0 }))
+
+    const result = await action(form)
+
+    if (result.status === 'success')
+      expect(result.data).toEqual({
+        file: new File(['test'], 'test.txt', { lastModified: 0 })
+      })
+  })
 })

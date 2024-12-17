@@ -45,8 +45,8 @@
   },
   "dependencies": {
     "client-only": "^0.0.1",
-    "next": "^15.0.1",
-    "react": "19.0.0-rc-cae764ce-20241025",
+    "next": "^15.1.0",
+    "react": "19.0.0",
     "server-only": "^0.0.1",
     "zod": "^3.23.8",
     "zod-validation-error": "^3.4.0"

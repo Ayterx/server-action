@@ -2,9 +2,9 @@ import { z } from 'zod'
 import type { ActionReturnType, InputsInfer, InputsType } from './types'
 import { fromZodError } from 'zod-validation-error'
 import { ActionError } from './error'
-import { isRedirectError } from 'next/dist/client/components/redirect'
 import type { Middleware, MiddlewareActionOptions } from './createMiddleware'
 import type { CreateActionOptions } from './createAction'
+import { unstable_rethrow } from 'next/navigation'
 
 export function handleAction<
   MiddlewareReturnGeneric,
@@ -144,6 +144,7 @@ export function handleAction<
         data: resolveAction
       }
     } catch (cause) {
+      unstable_rethrow(cause)
       if (cause instanceof z.ZodError) {
         const validationError = fromZodError(cause, {
           includePath: options.options?.validation?.includePath ?? false,
@@ -167,7 +168,7 @@ export function handleAction<
           type: 'server',
           message: cause.message
         }
-      } else if (isRedirectError(cause)) throw cause
+      }
 
       if (options.options?.error?.onServerError)
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
